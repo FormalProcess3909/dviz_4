@@ -177,7 +177,22 @@ class App extends Component {
       .sort((a, b) => b[1] - a[1])
       .slice(0, 5);
     console.log(data);
+    // Set the dimensions and margins
+    const margin = { top: 10, right: 50, bottom:50, left: 50 },
+      w = 1000 - margin.left - margin.right,
+      h = 150 - margin.top - margin.bottom;
     
+    if(data.length>0){
+      const wordScale = d3
+      .scaleLinear()
+      .domain([0,4])
+      .range([margin.left,w])
+
+      d3.select(".svg_parent")
+      .selectAll("text")
+      .data(data,d=>d[0])
+      
+    }
   }
 
   render() {
@@ -204,8 +219,10 @@ class App extends Component {
             Generate WordCloud
           </button>
         </div>
-        <div className="child2">
-          <svg className="svg_parent"></svg>
+        <div className="child2"
+          style={{ height: 150, width: 1000 }}>
+          <svg className="svg_parent"
+            style={{ height: 150, width: 1000 }}></svg>
         </div>
       </div>
     );
