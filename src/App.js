@@ -54,7 +54,7 @@ class App extends Component {
     // Set the dimensions and margins
     const margin = { top: 10, right: 50, bottom: 50, left: 20 },
       w = 1000 - margin.left - margin.right,
-      h = 150 - margin.top - margin.bottom;
+      h = 300 - margin.top - margin.bottom;
 
     // If statement to check if the data array isn't empty
     if (data.length > 0) {
