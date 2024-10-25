@@ -116,8 +116,8 @@ class App extends Component {
             Generate WordCloud
           </button>
         </div>
-        <div className="child2">
-          <svg className="svg_parent"></svg>
+        <div className="child2" style={{ height: 300, width: 1000 }}>
+          <svg className="svg_parent" style={{ height: 300, width: 1000 }}></svg>
         </div>
       </div>
     );
