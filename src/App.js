@@ -52,36 +52,43 @@ class App extends Component {
       .slice(0, 5);
     console.log(data);
     // Set the dimensions and margins
-    const margin = { top: 10, right: 50, bottom:50, left: 50 },
+    const margin = { top: 10, right: 50, bottom: 50, left: 20 },
       w = 1000 - margin.left - margin.right,
       h = 150 - margin.top - margin.bottom;
-    
-    // If statement to check if the data array isn't empty
-    if(data.length>0){
-      const wordScale = d3
-      .scaleLinear() // Creates a linear scale for the words along x-axis
-      .domain([0,4]) // Used for getting the top 5 words
-      .range([margin.left,w]) // Maps the words to the chart's width
 
+    // If statement to check if the data array isn't empty
+    if (data.length > 0) {
+      const wordScale = d3
+        .scaleLinear() // Creates a linear scale for the words along x-axis
+        .domain([0, 4]) // Used for getting the top 5 words
+        .range([margin.left, w]); // Maps the words to the chart's width
 
       d3.select(".svg_parent") // Select the svg container element with class ".svg_parent"
-      .selectAll("text") // Used to target all the text elements inside the container
-      .data(data,d=>d[0]) // Bind data using word as the key
-      // Still need to understand using join better https://d3js.org/d3-selection/joining
-      .join( // join(enter, update, exit) 
-        enter => enter.append("text")
-          .attr("x", (d,i)=>wordScale(i))
-          .attr("y", (h+margin.top+margin.bottom)/2)
-          .text(d=>d[0])
-          .attr("font-size",0)
-          .transition().duration(5000)
-          .attr("font-size", d=>`${(9*d[1])}px`),
-        update => update
-          .transition().duration(5000)
-          .attr("font-size", d=>`${(9*d[1])}px`)
-          .attr("x",(d,i)=>wordScale(i)),
-        exit => exit.remove()
-      )
+        .selectAll("text") // Used to target all the text elements inside the container
+        .data(data, (d) => d[0]) // Bind data using word as the key
+        // Still need to understand using join better https://d3js.org/d3-selection/joining
+        .join(
+          // join(enter, update, exit)
+          (enter) =>
+            enter
+              .append("text") // Creates a new text element for each word in the array
+              .attr("x", (d, pos) => wordScale(pos)) //Set x-position for each word in array
+              .attr("y", (h + margin.top + margin.bottom) / 2) //Sets y-position to middle of svg
+              .text((d) => d[0]) // Sets the text to the word itself
+              .attr("font-size", 0) // Sets the initial font size to 0 for effect
+              .transition() // Starts a transition animation
+              .duration(6000) // Duration time is in ms, so 6 sec
+              .attr("font-size", (d) => `${10 * d[1]}px`), // Sets font size by multipyling the frequency of the word by 10
+            // Update will update existing text elements with the new data
+          (update) =>
+            update
+              .transition() // Starts a transition animation
+              .duration(6000) // Duration time is in ms, so 6 sec
+              .attr("font-size", (d) => `${10 * d[1]}px`) // Sets font size by multiplying the frequency of the word by 10
+              // The .attr() for "x" needs to come after the transition function or it will just jump to that position
+              .attr("x", (d, pos) => wordScale(pos)), //Set x-position for each word in array
+          (exit) => exit.remove() // removes any elements that are no longer in the data
+        );
     }
   }
 
